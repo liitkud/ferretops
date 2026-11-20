@@ -112,6 +112,12 @@ func Scan(args []string) error {
 	return executeVerdict(backendVerdict, backendViolations, backendReason, *jsonOutput)
 }
 
+// emptyTreeSHA is git's well-known hash of the empty tree object. Diffing
+// against it yields the full content of a ref, which is what we want when
+// there is no meaningful "base" to diff against (e.g. a pre-push hook with
+// no upstream tracking branch yet).
+const emptyTreeSHA = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+
 func getGitDiff(mode string) (string, error) {
 	if _, err := exec.LookPath("git"); err != nil {
 		return "", errors.New("git is not installed or not available in PATH")
@@ -119,7 +125,21 @@ func getGitDiff(mode string) (string, error) {
 
 	args := []string{"diff", "--no-color", "--cached"}
 	if mode == "full" {
-		args = []string{"diff", "--no-color", "HEAD"}
+		// NOTE: `git diff HEAD` compares the working tree + index against
+		// HEAD, which is empty right after a normal `git commit`. That made
+		// `pg scan` (and therefore the pre-push hook, which runs after the
+		// commits to be pushed already exist) always report "no violations"
+		// for already-committed secrets. Diff against the upstream tracking
+		// branch when one exists (the commits actually being pushed), or
+		// against the empty tree otherwise (first push: scan everything in
+		// HEAD).
+		base := emptyTreeSHA
+		if out, err := exec.Command("git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}").Output(); err == nil {
+			if upstream := strings.TrimSpace(string(out)); upstream != "" {
+				base = upstream
+			}
+		}
+		args = []string{"diff", "--no-color", base, "HEAD"}
 	}
 
 	output, err := exec.Command("git", args...).Output()
