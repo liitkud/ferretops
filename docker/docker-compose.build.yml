@@ -19,13 +19,12 @@ services:
     build:
       context: ../backend
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
+    network_mode: host
     user: root
     env_file:
       - ../.env
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-comply}:${POSTGRES_PASSWORD:-complyaigent2026}@postgres:5432/${POSTGRES_DB:-complyaigent}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-comply}:${POSTGRES_PASSWORD:-complyaigent2026}@127.0.0.1:5432/${POSTGRES_DB:-complyaigent}
       PROJECT_NAME: FerretOPS
       LOG_LEVEL: INFO
       ENVIRONMENT: production
