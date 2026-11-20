@@ -58,8 +58,13 @@ class CategorizerService:
                 model=settings.CHAT_MODEL,
                 openai_api_key=settings.LLM_API_KEY,
                 base_url=settings.LLM_ENDPOINT,
-                timeout=5.0,
-                # 5s timeout per LLM call
+                timeout=45.0,
+                # NOTE (E2E test, 2026-10-31): was 5.0s. With a real
+                # OpenAI-compatible endpoint this was observed to clip
+                # slower/reasoning-routed completions mid-generation,
+                # producing an empty or truncated `content` field and a
+                # hard categorizer failure after 3 retries. Raised so a
+                # genuine (slower) completion has room to finish.
             )
         return self._llm
 
@@ -89,9 +94,24 @@ class CategorizerService:
                   DO NOT use "MUST", "SHOULD", "COULD", or any section headers.
                 - source_category: MUST BE one of ["government_law", "org_guideline", "org_constitution"].
                   "org_constitution" means internal company policy like MUST/SHOULD/COULD rules.
+                - For type "A1_SCANNABLE" ONLY: the "metadata" object MUST contain exactly
+                  these three string keys: "pattern" (a valid Python regex, NOT named
+                  "regex"), "test_pass" (a short example string that pattern matches),
+                  and "test_fail" (a short example string that pattern does NOT match).
+                  Example: "metadata": {{"pattern": "AKIA[0-9A-Z]{{16}}", "test_pass": "AKIAIOSFODNN7EXAMPLE", "test_fail": "not_a_key"}}
+                  A1_SCANNABLE rules missing this exact metadata shape are discarded, so
+                  only use A1_SCANNABLE when a concrete literal/regex pattern exists in
+                  the requirement text; otherwise use A2_ACTIONABLE.
+                  IMPORTANT: "test_pass" MUST be an actual literal string that the
+                  "pattern" regex matches (verify this yourself character-by-character
+                  before answering) -- do NOT use a placeholder like "[REDACTED]" or
+                  a description of a secret; use a well-known safe fake example instead
+                  (e.g. AWS's own publicly documented placeholder key
+                  "AKIAIOSFODNN7EXAMPLE" for an AWS key pattern). A rule is discarded
+                  if test_pass does not literally match pattern.
                 """
                 # Use asyncio.wait_for for strict timeout if SDK timeout isn't enough
-                response = await asyncio.wait_for(self.llm.ainvoke(prompt), timeout=6.0)
+                response = await asyncio.wait_for(self.llm.ainvoke(prompt), timeout=50.0)
 
                 raw_content = response.content
                 if not isinstance(raw_content, str):
