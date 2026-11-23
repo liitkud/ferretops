@@ -1,0 +1,194 @@
+/*
+  Home page motion and the hero grid (Main.dc.html <helmet>, AppShot.dc.html, Marquee.dc.html).
+  Kept as a module because the keyframes, grid placement and reduced-motion overrides
+  are unreadable as Tailwind utilities. Everything else on the page is Tailwind.
+*/
+
+/* Entrance: hero copy, hero visual, step scenes and their rows. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(0.875rem); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes mock {
+  from { opacity: 0; transform: translateY(1.75rem) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.rise { opacity: 0; animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.mockIn { opacity: 0; animation: mock 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s forwards; }
+.rowIn { opacity: 0; animation: rise 0.5s ease-out forwards; }
+
+/* Reading line that sweeps down the policy page and the scanned diff. */
+@keyframes scan {
+  0% { top: 0; opacity: 0; }
+  12% { opacity: 0.8; }
+  88% { opacity: 0.8; }
+  100% { top: 100%; opacity: 0; }
+}
+.scan {
+  position: absolute; left: 0; right: 0; top: 0; height: 0.125rem;
+  background: var(--fur); pointer-events: none; opacity: 0;
+  animation: scan 3.2s ease-in-out 1.6s infinite;
+}
+.scanPage { animation-duration: 7s; animation-delay: 0s; }
+
+/* Hero loop (7s): clause highlight, wires, odometer counts, requirement roll, landing opacity. */
+@keyframes flow {
+  0% { stroke-dashoffset: 1; }
+  10% { stroke-dashoffset: 0; }
+  71% { stroke-dashoffset: 0; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  83%, 100% { stroke-dashoffset: 1; }
+}
+.flow { stroke-dasharray: 1 3; stroke-dashoffset: 1; animation: flow 7s ease-out infinite; }
+
+@keyframes mark {
+  0% { background-size: 0% 100%, 0% 0.125rem; }
+  10% { background-size: 100% 100%, 100% 0.125rem; }
+  78% { background-size: 100% 100%, 100% 0.125rem; }
+  90%, 100% { background-size: 0% 100%, 0% 0.125rem; }
+}
+.hl {
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  background-repeat: no-repeat; background-position: 0 0, 0 100%;
+  background-size: 0% 100%, 0% 0.125rem;
+  animation: mark 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+/* Highlighter fills: two flat layers (tint + underline), animated by background-size. */
+.hlPageGate { background-image: linear-gradient(#fde9e0, #fde9e0), linear-gradient(#c2410c, #c2410c); }
+.hlPageCycle { background-image: linear-gradient(#dcf3ef, #dcf3ef), linear-gradient(#0f766e, #0f766e); }
+.hlPageLedger { background-image: linear-gradient(#e3eafc, #e3eafc), linear-gradient(#3156c4, #3156c4); }
+.hlGate { background-image: linear-gradient(var(--gate-soft), var(--gate-soft)), linear-gradient(var(--gate), var(--gate)); }
+.hlCycle { background-image: linear-gradient(var(--cycle-soft), var(--cycle-soft)), linear-gradient(var(--cycle), var(--cycle)); }
+.hlLedger { background-image: linear-gradient(var(--ledger-soft), var(--ledger-soft)), linear-gradient(var(--ledger), var(--ledger)); }
+
+@keyframes odo {
+  0% { transform: translateY(0); }
+  5% { transform: translateY(-100%); }
+  70% { transform: translateY(-100%); }
+  82%, 100% { transform: translateY(0); }
+}
+.odo { display: inline-flex; flex-direction: column; height: 1.25rem; line-height: 1.25rem; overflow: hidden; }
+.odo > span {
+  display: block; flex: none; height: 1.25rem;
+  animation: odo 7s cubic-bezier(0.3, 0, 0.2, 1) infinite; animation-delay: inherit;
+}
+.reqroll { display: flex; width: 100%; height: 1.5rem; line-height: 1.5rem; font-size: 0.875rem; }
+.reqroll > span { height: 1.5rem; line-height: 1.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+@keyframes land {
+  0% { opacity: 0.8; }
+  6% { opacity: 1; }
+  70% { opacity: 1; }
+  82%, 100% { opacity: 0.8; }
+}
+.land { opacity: 0.8; animation: land 7s ease-out infinite; }
+
+/* Activity log: 8s upward scroll, last line repeats the first so the loop is seamless. */
+@keyframes tick {
+  0%, 20% { transform: translateY(0); }
+  25%, 45% { transform: translateY(-1.25rem); }
+  50%, 70% { transform: translateY(-2.5rem); }
+  75%, 95% { transform: translateY(-3.75rem); }
+  100% { transform: translateY(-5rem); }
+}
+.ticker {
+  display: block; height: 1.25rem; overflow: hidden;
+  font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.25rem; color: var(--ink-300);
+}
+.tickerTrack { display: flex; flex-direction: column; animation: tick 8s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.tickerTrack > span { display: block; height: 1.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Hero grid. >60rem: page | wires | buckets | wires | files. */
+.viz {
+  display: grid; justify-content: center;
+  grid-template-columns: 23.75rem minmax(2.5rem, 8.75rem) minmax(13rem, 16.875rem) minmax(2rem, 6.875rem) minmax(13rem, 17.5rem);
+  grid-template-rows: 9.375rem 1fr 9.375rem 1fr 9.375rem;
+  height: 31.25rem;
+}
+.vizPage { grid-column: 1; grid-row: 1 / -1; position: relative; min-width: 0; }
+.vizC1 { grid-column: 2; grid-row: 1 / -1; }
+.vizC2 { grid-column: 4; grid-row: 1 / -1; }
+.vizB, .vizF { min-width: 0; height: 9.375rem; }
+.vizB1 { grid-column: 3; grid-row: 1; }
+.vizB2 { grid-column: 3; grid-row: 3; }
+.vizB3 { grid-column: 3; grid-row: 5; }
+.vizF1 { grid-column: 5; grid-row: 1; }
+.vizF2 { grid-column: 5; grid-row: 3; }
+.vizF3 { grid-column: 5; grid-row: 5; }
+
+/* 40–60rem: page centered on top, then bucket | file rows, no wires. */
+@media (max-width: 60rem) {
+  .viz { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; height: auto; column-gap: 2rem; }
+  .connectors { display: none; }
+  .vizPage { grid-column: 1 / -1; grid-row: 1; justify-self: center; width: 23.75rem; height: 31.25rem; margin-bottom: 3rem; }
+  .vizB1, .vizF1 { grid-row: 2; }
+  .vizB2, .vizF2 { grid-row: 3; }
+  .vizB3, .vizF3 { grid-row: 4; }
+  .vizB { grid-column: 1; }
+  .vizF { grid-column: 2; border-top: 0.0625rem solid var(--line-100); }
+}
+
+/* <40rem: one column, page, Code, code.yml, Infra, infra.rego, People, tasks.yml. */
+@media (max-width: 40rem) {
+  .viz { grid-template-columns: minmax(0, 1fr); }
+  .vizB, .vizF { grid-column: 1; }
+  .vizB1 { grid-row: 2; }
+  .vizF1 { grid-row: 3; }
+  .vizB2 { grid-row: 4; }
+  .vizF2 { grid-row: 5; }
+  .vizB3 { grid-row: 6; }
+  .vizF3 { grid-row: 7; }
+  .vizF { border-top: 0; height: auto; padding: 0 0 1.5rem; }
+  .vizB { height: auto; padding-bottom: 1rem; }
+  .vizB .ticker { margin-top: 0.25rem; }
+}
+/* The 23.75rem page needs 26.75rem of viewport with the 1.5rem gutters; shrink it below that. */
+@media (max-width: 27.5rem) { .vizPage { zoom: 0.88; } }
+@media (max-width: 23.5rem) { .vizPage { zoom: 0.8; } }
+
+/* Product tabs: 6s progress along the active tab. animationend drives auto-advance. */
+@keyframes grow { from { width: 0; } to { width: 100%; } }
+.tabProg { animation: grow 6s linear forwards; }
+
+/* How it works: per-step rail fills over 4.5s. animationend drives auto-advance. */
+@keyframes vgrow { from { height: 0; } to { height: 100%; } }
+.rail {
+  position: absolute; left: 0; top: 0.75rem; bottom: 0.75rem; width: 0.125rem;
+  background: var(--line-100); border-radius: 0.125rem; overflow: hidden;
+}
+.vprog { display: block; width: 100%; height: 0; animation: vgrow 4.5s linear forwards; }
+
+/* App screenshot entrance (AppShot.dc.html fo-in / fo-row). */
+@keyframes shotIn {
+  from { opacity: 0; transform: translateY(0.375rem); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes shotRow {
+  0% { opacity: 0; background: transparent; }
+  40% { opacity: 1; background: var(--bg-200); }
+  100% { opacity: 1; background: transparent; }
+}
+.in { opacity: 0; animation: shotIn 0.45s ease-out forwards; }
+.row td { opacity: 0; animation: shotRow 0.9s ease-out forwards; }
+
+/* Integrations marquee: 40s linear, pauses on hover or with the button. */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marqueeTrack { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+.marqueeWrap:hover .marqueeTrack, .marqueePaused .marqueeTrack { animation-play-state: paused; }
+.marqueeMask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* Reduced motion: nothing moves, every animated piece shows its final state. */
+@media (prefers-reduced-motion: reduce) {
+  .rise, .mockIn, .rowIn, .in, .row td { opacity: 1; animation: none; }
+  .scan { display: none; }
+  .flow { animation: none; stroke-dashoffset: 0; }
+  .hl { animation: none; background-size: 100% 100%, 100% 0.125rem; }
+  .odo > span { animation: none; transform: translateY(-100%); }
+  .land { animation: none; opacity: 1; }
+  .tickerTrack { animation: none; }
+  .tabProg { animation: none; width: 0; }
+  .vprog { animation: none; height: 100%; }
+  .marqueeTrack { animation: none; }
+}

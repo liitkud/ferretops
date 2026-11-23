@@ -1,10 +1,23 @@
-// TODO(home): build from design/project/Main.dc.html (spec §4 Home).
+import type { Metadata } from "next";
+import Hero from "@/components/home/Hero";
+import ProductTabs from "@/components/home/ProductTabs";
+import HowItWorks from "@/components/home/HowItWorks";
+import Developer from "@/components/home/Developer";
+import ClosingCta from "@/components/home/ClosingCta";
+
+export const metadata: Metadata = {
+  title: { absolute: "FerretOps | Compliance documents to running checks" },
+};
+
+// Home (Main.dc.html, spec §4 Home). The integrations Marquee (components/home/Marquee) is deferred and not rendered.
 export default function HomePage() {
   return (
-    <main className="mx-auto w-full max-w-[75rem] px-6 py-16 text-center">
-      <h1 className="font-heading text-[2.625rem] font-bold leading-none tracking-[-0.035em] md:text-[4.75rem]">
-        Turn compliance docs into checks that actually run.
-      </h1>
+    <main>
+      <Hero />
+      <ProductTabs />
+      <HowItWorks />
+      <Developer />
+      <ClosingCta />
     </main>
   );
 }
