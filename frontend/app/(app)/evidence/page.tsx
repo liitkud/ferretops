@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
-import AppTopBar from "@/components/fo/AppTopBar";
-import AppPage from "@/components/fo/AppPage";
+import EvidenceView from "@/components/app-settings/EvidenceView";
 
 export const metadata: Metadata = { title: "Evidence" };
 
-// TODO(app-settings): build from design/project/Evidence.dc.html (spec §5).
+// Evidence (Evidence.dc.html, spec §5). The export action lives in the top bar, so the whole view is client.
 export default function EvidencePage() {
-  return (
-    <>
-      <AppTopBar crumbs={[{ label: "Acme", href: "/overview" }, { label: "Evidence" }]} />
-      <AppPage title="Evidence" />
-    </>
-  );
+  return <EvidenceView />;
 }
