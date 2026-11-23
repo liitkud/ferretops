@@ -1,0 +1,8 @@
+/* On/off switch (Settings.dc.html .sw): a 2.75rem target with a drawn track and knob. */
+.sw { position: relative; width: 2.75rem; height: 2.75rem; border: 0; background: transparent; cursor: pointer; padding: 0; }
+.sw::before { content: ""; position: absolute; left: 0.25rem; top: 0.875rem; width: 2.25rem; height: 1rem; border-radius: var(--radius-pill); background: var(--line-200); }
+.sw::after { content: ""; position: absolute; left: 0.375rem; top: 1rem; width: 0.75rem; height: 0.75rem; border-radius: var(--radius-pill); background: var(--ink-300); transition: transform .15s ease-out; }
+.sw[aria-checked="true"]::before { background: var(--fur); }
+.sw[aria-checked="true"]::after { transform: translateX(1.25rem); background: var(--on-fur); }
+.sw:focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0; }
+@media (prefers-reduced-motion: reduce) { .sw::after { transition: none; } }
