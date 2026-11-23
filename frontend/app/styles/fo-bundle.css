@@ -1,0 +1,150 @@
+/* Copied from design ds/ferretops/components/bundle.css. Only change: the Google Fonts @import is dropped; fonts are self-hosted via next/font in app/layout.tsx. */
+
+/* FerretOps components. Every value comes from tokens.css custom properties. */
+
+.fo-root, body {
+  font-family: var(--font-sans);
+  font-size: 0.875rem; line-height: 1.25rem;
+  color: var(--ink-100);
+  background: var(--bg-000);
+  -webkit-font-smoothing: antialiased;
+}
+.fo-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Button */
+.fo-btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  height: 2rem; padding: 0 var(--space-3);
+  font: 500 0.8125rem/1 var(--font-sans);
+  border-radius: var(--radius-md); border: 0.0625rem solid transparent;
+  cursor: pointer; transition: background-color 120ms ease-out, border-color 120ms ease-out, color 120ms ease-out;
+  white-space: nowrap;
+}
+.fo-btn:focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0.125rem; }
+.fo-btn:disabled { opacity: .4; cursor: not-allowed; }
+.fo-btn svg { width: 1rem; height: 1rem; }
+.fo-btn--primary { background: var(--fur); color: var(--on-fur); }
+.fo-btn--primary:hover:not(:disabled) { background: var(--fur-hover); }
+.fo-btn--secondary { background: var(--bg-100); color: var(--ink-100); border-color: var(--line-200); }
+.fo-btn--secondary:hover:not(:disabled) { background: var(--bg-200); }
+.fo-btn--ghost { background: transparent; color: var(--ink-200); }
+.fo-btn--ghost:hover:not(:disabled) { background: var(--bg-200); color: var(--ink-100); }
+.fo-btn--danger { background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
+.fo-btn--danger:hover:not(:disabled) { background: var(--danger); color: var(--bg-100); }
+.fo-btn--sm { height: 1.625rem; padding: 0 var(--space-2); font-size: 0.75rem; }
+
+/* Badge (status) */
+.fo-badge {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  height: 1.375rem; padding: 0 var(--space-2);
+  font: 500 0.75rem/1 var(--font-sans); letter-spacing: .02em;
+  border-radius: var(--radius-sm);
+  background: var(--bg-200); color: var(--ink-200);
+}
+.fo-badge::before { content: none; }
+.fo-badge--ok { background: var(--ok-soft); color: var(--ok); }
+.fo-badge--warn { background: var(--warn-soft); color: var(--warn); }
+.fo-badge--danger { background: var(--danger-soft); color: var(--danger); }
+.fo-badge--info { background: var(--info-soft); color: var(--info); }
+
+/* Module chip */
+.fo-module {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  height: 1.375rem; padding: 0 var(--space-2);
+  font: 500 0.75rem/1 var(--font-mono);
+  border-radius: var(--radius-sm);
+}
+.fo-module svg { width: 0.75rem; height: 0.75rem; }
+.fo-module--gate { background: var(--gate-soft); color: var(--gate); }
+.fo-module--cycle { background: var(--cycle-soft); color: var(--cycle); }
+.fo-module--ledger { background: var(--ledger-soft); color: var(--ledger); }
+
+/* Input */
+.fo-field { display: flex; flex-direction: column; gap: 0.375rem; }
+.fo-field__label { font: 500 0.75rem/1rem var(--font-sans); letter-spacing: .02em; color: var(--ink-200); }
+.fo-field__help { font: 400 0.8125rem/1.125rem var(--font-sans); color: var(--ink-300); }
+.fo-field__help--error { color: var(--danger); }
+.fo-input {
+  height: 2.125rem; padding: 0 var(--space-3);
+  font: 400 0.875rem/1.25rem var(--font-sans); color: var(--ink-100);
+  background: var(--bg-inset); border: 0.0625rem solid var(--line-200); border-radius: var(--radius-md);
+  transition: border-color 120ms ease-out;
+}
+.fo-input::placeholder { color: var(--ink-300); }
+.fo-input:focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0.125rem; }
+.fo-input--mono { font-family: var(--font-mono); font-size: 0.8125rem; }
+.fo-input[aria-invalid="true"] { border-color: var(--danger); }
+
+/* Panel + stat */
+.fo-panel {
+  background: var(--bg-100); border: 0.0625rem solid var(--line-100); border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+.fo-panel--compact { padding: var(--space-4); }
+.fo-panel__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-4); }
+.fo-panel__title { font: 600 1rem/1.5rem var(--font-sans); color: var(--ink-100); margin: 0; }
+.fo-panel__desc { font: 400 0.8125rem/1.125rem var(--font-sans); color: var(--ink-300); margin: 0.125rem 0 0; }
+.fo-stat__label { font: 500 0.75rem/1rem var(--font-sans); letter-spacing: .02em; color: var(--ink-200); display: flex; align-items: center; gap: var(--space-2); }
+.fo-stat__value { font: 500 1.5rem/1.75rem var(--font-mono); letter-spacing: -.01em; font-variant-numeric: tabular-nums; color: var(--ink-100); margin-top: var(--space-2); }
+.fo-stat__delta { font: 400 0.8125rem/1.125rem var(--font-sans); color: var(--ink-300); margin-top: var(--space-1); }
+
+/* Data table */
+.fo-table-wrap { background: var(--bg-100); border: 0.0625rem solid var(--line-100); border-radius: var(--radius-lg); overflow: hidden; }
+.fo-table { width: 100%; border-collapse: collapse; }
+.fo-table th {
+  text-align: left; padding: var(--space-2) var(--space-3);
+  font: 600 0.6875rem/1rem var(--font-sans); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-300); background: var(--bg-000); border-bottom: 0.0625rem solid var(--line-100);
+}
+.fo-table td {
+  height: 2.75rem; padding: 0 var(--space-3);
+  font: 400 0.875rem/1.25rem var(--font-sans); color: var(--ink-200);
+  border-bottom: 0.0625rem solid var(--line-100);
+}
+.fo-table tr:last-child td { border-bottom: 0; }
+.fo-table tbody tr:hover td { background: var(--bg-200); }
+.fo-table td.fo-key { color: var(--ink-100); font-family: var(--font-mono); font-size: 0.8125rem; }
+.fo-table td.fo-muted { color: var(--ink-300); font-size: 0.8125rem; }
+
+/* Sidebar */
+.fo-side { width: 15rem; background: var(--bg-000); border-right: 0.0625rem solid var(--line-100); padding: var(--space-4) var(--space-3); display: flex; flex-direction: column; gap: var(--space-4); }
+.fo-wordmark { display: flex; align-items: center; gap: var(--space-2); font: 700 1.125rem/1 var(--font-display); letter-spacing: -.01em; color: var(--ink-100); padding: var(--space-1) var(--space-3); }
+.fo-wordmark img { width: 1.5rem; height: 1.5rem; flex: none; }
+.fo-wordmark span { color: var(--fur-text); }
+.fo-nav { display: flex; flex-direction: column; gap: 0.125rem; }
+.fo-nav__head { font: 600 0.6875rem/1rem var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-300); padding: 0 var(--space-3); margin-bottom: var(--space-1); }
+.fo-nav__item {
+  position: relative; display: flex; align-items: center; gap: var(--space-2);
+  height: 2rem; padding: 0 var(--space-3); border-radius: var(--radius-md);
+  font: 500 0.8125rem/1 var(--font-sans); color: var(--ink-200); text-decoration: none;
+  transition: background-color 120ms ease-out, color 120ms ease-out;
+}
+.fo-nav__item svg { width: 1rem; height: 1rem; flex: none; }
+.fo-nav__item:hover { background: var(--bg-200); color: var(--ink-100); }
+.fo-nav__item:focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0.125rem; }
+.fo-nav__item[aria-current="page"] { background: var(--bg-200); color: var(--ink-100); }
+.fo-nav__item[aria-current="page"]::before { content: none; }
+.fo-nav__count { margin-left: auto; font: 500 0.75rem/1 var(--font-mono); color: var(--ink-300); }
+.fo-nav__item--gate svg { color: var(--gate); }
+.fo-nav__item--cycle svg { color: var(--cycle); }
+.fo-nav__item--ledger svg { color: var(--ledger); }
+
+/* Secret mask */
+.fo-secret {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  height: 2.125rem; padding: 0 var(--space-1) 0 var(--space-3);
+  background: var(--bg-inset); border: 0.0625rem solid var(--line-100); border-radius: var(--radius-md);
+  font: 400 0.8125rem/1.25rem var(--font-mono); color: var(--ink-200);
+}
+.fo-secret__dots { letter-spacing: .12em; color: var(--ink-300); }
+.fo-secret__tail { color: var(--ink-100); }
+.fo-secret__btn {
+  display: inline-grid; place-items: center; width: 1.625rem; height: 1.625rem;
+  background: transparent; border: 0; border-radius: var(--radius-sm); color: var(--ink-300); cursor: pointer;
+}
+.fo-secret__btn:hover { background: var(--bg-200); color: var(--ink-100); }
+.fo-secret__btn:focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0.0625rem; }
+.fo-secret__btn svg { width: 0.875rem; height: 0.875rem; }
+.fo-secret--leaked { border-color: var(--danger); }
+
+@media (prefers-reduced-motion: reduce) { .fo-btn, .fo-input, .fo-nav__item { transition: none; } }

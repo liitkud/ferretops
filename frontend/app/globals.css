@@ -1,193 +1,91 @@
 @import "tailwindcss";
 
+/* Design tokens stay unlayered so they override Tailwind's theme defaults (radius, fonts). */
+@import "./styles/tokens.css";
+
+/* Component CSS sits in the components layer so Tailwind utilities can always override it. */
+@import "./styles/fo-bundle.css" layer(components);
+@import "./styles/fo-app.css" layer(components);
+
+/* Point the token font families at the self-hosted next/font faces set on <html> in app/layout.tsx. */
 :root {
-  --background: #131313;
-  --foreground: #e7e7e7;
-  --panel: #191919;
-  --panel-raised: #202020;
-  --line: #343434;
-  --muted: #8e8e8e;
-  --cobalt: #adc6ff;
-  --cobalt-strong: #4d8eff;
-  --emerald: #4edea3;
-  --breach: #ffb3ad;
-  --breach-strong: #ff5451;
+  --font-display: var(--font-bricolage), "Geist", system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  color-scheme: light;
 }
 
+/*
+  Tokens as Tailwind classes: bg-bg-000, text-ink-200, border-line-100, text-fur, bg-fur-soft,
+  text-ok / text-danger, text-gate / text-cycle / text-ledger, font-heading / font-sans / font-mono.
+*/
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-000: var(--bg-000);
+  --color-bg-100: var(--bg-100);
+  --color-bg-200: var(--bg-200);
+  --color-bg-inset: var(--bg-inset);
+  --color-line-100: var(--line-100);
+  --color-line-200: var(--line-200);
+  --color-ink-100: var(--ink-100);
+  --color-ink-200: var(--ink-200);
+  --color-ink-300: var(--ink-300);
+  --color-fur: var(--fur);
+  --color-fur-hover: var(--fur-hover);
+  --color-on-fur: var(--on-fur);
+  --color-fur-text: var(--fur-text);
+  --color-fur-soft: var(--fur-soft);
+  --color-gate: var(--gate);
+  --color-gate-soft: var(--gate-soft);
+  --color-cycle: var(--cycle);
+  --color-cycle-soft: var(--cycle-soft);
+  --color-ledger: var(--ledger);
+  --color-ledger-soft: var(--ledger-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-focus: var(--focus);
+
+  --font-heading: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-pill: var(--radius-pill);
 }
 
-* {
-  box-sizing: border-box;
+/* Hairline borders (0.0625rem). Tailwind's bare `border` is 1px, so use these instead. */
+@utility border-hair {
+  border-width: 0.0625rem;
+}
+@utility border-t-hair {
+  border-top-width: 0.0625rem;
+}
+@utility border-b-hair {
+  border-bottom-width: 0.0625rem;
+}
+@utility border-l-hair {
+  border-left-width: 0.0625rem;
+}
+@utility border-r-hair {
+  border-right-width: 0.0625rem;
 }
 
-html,
-body {
-  min-height: 100%;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), Arial, sans-serif;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--cobalt);
-  outline-offset: 2px;
-}
-
-.ops-panel {
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background: var(--panel);
-}
-
-.ops-label {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-@media (max-width: 767px) {
-  .ops-sidebar {
-    width: 100%;
-    max-width: 100vw;
-    flex-direction: row;
-    align-items: center;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .ops-sidebar .sidebar-brand {
-    flex-shrink: 0;
-    border-bottom: 0;
-  }
-
-  /* The wordmark/subtitle is the first thing to go under width pressure —
-     the "F" mark alone still identifies the product, and freeing this
-     text is what keeps the nav row from forcing the whole bar past the
-     viewport on a phone. */
-  .ops-sidebar .sidebar-brand-text {
-    display: none;
-  }
-
-  .ops-sidebar .sidebar-nav {
-    flex: 1 1 auto;
-    min-width: 0;
-    flex-direction: row;
-    gap: 2px;
-    overflow-x: auto;
-    padding: 8px;
-  }
-
-  /* Analytics kicker only makes sense stacked above a vertical list. */
-  .ops-sidebar .sidebar-nav > p {
-    display: none;
-  }
-
-  .ops-sidebar .sidebar-actions,
-  .ops-sidebar .sidebar-toggle {
-    display: none;
+/* Global focus ring (spec §8): never removed. */
+@layer base {
+  :focus-visible {
+    outline: 0.125rem solid var(--focus);
+    outline-offset: 0.125rem;
   }
 }
 
-/* pdf.js real text layer for the hero document demo: invisible, selectable
-   text positioned exactly over the canvas render. */
-.pdf-text-layer {
-  line-height: 1;
-  text-align: initial;
-  overflow: clip;
-  color-scheme: only light;
-}
-
-.pdf-text-layer span,
-.pdf-text-layer br {
-  color: transparent;
-  position: absolute;
-  white-space: pre;
-  cursor: text;
-  transform-origin: 0% 0%;
-  user-select: text;
-}
-
-.pdf-text-layer ::selection {
-  background: rgba(78, 222, 163, 0.35);
-}
-
-/* Hero document demo: essence boxes "detect" each clause in sequence —
-   border + glow cascades in, holds, fades, then loops to the next box.
-   Shares the extraction demo's cadence (hold, soft fade, loop). */
-@keyframes hero-doc-box-reveal {
-  0%,
-  100% {
-    opacity: 0;
-    border-color: transparent;
-    box-shadow: none;
-  }
-  4% {
-    opacity: 1;
-    border-color: var(--box-color);
-    box-shadow: 0 0 0 1px var(--box-color) inset;
-  }
-  68% {
-    opacity: 1;
-    border-color: var(--box-color);
-    box-shadow: 0 0 0 1px var(--box-color) inset;
-  }
-  84% {
-    opacity: 0;
-    border-color: transparent;
-    box-shadow: none;
-  }
-}
-
-.hero-doc-box {
-  border: 1px solid transparent;
-  opacity: 0;
-  animation: hero-doc-box-reveal 8s ease-in-out infinite;
-}
-
-@keyframes hero-doc-box-tag-reveal {
-  0%,
-  100% {
-    opacity: 0;
-    transform: translateY(2px) scale(0.94);
-  }
-  4% {
-    opacity: 0;
-    transform: translateY(2px) scale(0.94);
-  }
-  10% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  68% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  84% {
-    opacity: 0;
-    transform: translateY(2px) scale(0.94);
-  }
-}
-
-.hero-doc-box-tag {
-  opacity: 0;
-  animation: hero-doc-box-tag-reveal 8s ease-in-out infinite;
-}
-
+/* Reduced motion: nothing moves, final state shows. */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
@@ -197,16 +95,4 @@ a:focus-visible {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-
-  .hero-doc-box {
-    opacity: 1 !important;
-    border-color: var(--box-color) !important;
-    box-shadow: 0 0 0 1px var(--box-color) inset !important;
-  }
-
-  .hero-doc-box-tag {
-    opacity: 1 !important;
-    transform: none !important;
-  }
 }
-
