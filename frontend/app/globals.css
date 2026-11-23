@@ -60,7 +60,7 @@
   --radius-pill: var(--radius-pill);
 }
 
-/* Hairline borders (0.0625rem). Tailwind's bare `border` is 1px, so use these instead. */
+/* Hairline borders (0.0625rem). Tailwind's bare `border` is a pixel width, so use these instead. */
 @utility border-hair {
   border-width: 0.0625rem;
 }
