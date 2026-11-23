@@ -8,7 +8,13 @@ test.describe("mobile runtime baseline", () => {
 
   test("loads the live dashboard without mobile layout regressions", async ({
     page,
+    request,
   }) => {
+    // Needs the real backend; skip (not fail) when it is not running.
+    const backendBaseURL = process.env.E2E_API_BASE_URL ?? "http://localhost:8000";
+    const health = await request.get(`${backendBaseURL}/health`).catch(() => null);
+    test.skip(!health, `Backend not reachable at ${backendBaseURL}`);
+
     const apiResponses = new Map<string, number>();
     page.on("response", (response) => {
       const url = new URL(response.url());
@@ -17,9 +23,9 @@ test.describe("mobile runtime baseline", () => {
       }
     });
 
-    await page.goto("/");
+    await page.goto("/dashboard");
 
-    await expect(page).toHaveTitle(/FerretOPS/);
+    await expect(page).toHaveTitle(/FerretOps/i);
     await expect(page.getByText("FerretOPS / Command Console")).toBeVisible();
     await expect(
       page.getByRole("heading", { name: "Compliance Dashboard" }),

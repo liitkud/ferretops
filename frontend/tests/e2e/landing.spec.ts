@@ -1,18 +1,20 @@
 import { expect, test } from "@playwright/test";
 
-test("landing page explains FerretOPS and links to the live console", async ({
+// Legacy landing (/landing): the old console pitch page, kept for URL compatibility.
+test("legacy landing renders and links into the legacy console", async ({
   page,
 }) => {
   await page.goto("/landing");
 
-  await expect(page).toHaveTitle(/FerretOPS/);
+  await expect(page).toHaveTitle(/FerretOps/i);
   await expect(
-    page.getByRole("heading", { name: /Turn policy into a guardrail/i }),
+    page.getByRole("heading", { level: 1, name: /Statutory text/i }),
   ).toBeVisible();
+  const hero = page.locator("#hero-title").locator("xpath=..");
   await expect(
-    page.getByRole("link", { name: /Ingest a policy/i }),
-  ).toHaveAttribute("href", "/upload");
+    hero.getByRole("link", { name: /Ingest a policy/i }),
+  ).toHaveAttribute("href", "/policy");
   await expect(
-    page.getByRole("link", { name: /Open console/i }),
-  ).toHaveAttribute("href", "/");
+    hero.getByRole("link", { name: /Open the console/i }),
+  ).toHaveAttribute("href", "/dashboard");
 });

@@ -34,7 +34,7 @@ test("approves a pending validation through the HITL API", async ({ page }) => {
     await route.fulfill({ json: [] });
   });
 
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.getByRole("heading", { name: "HITL Pending Approvals" })).toBeVisible();
   await page.getByRole("button", { name: "Approve" }).click();
 
