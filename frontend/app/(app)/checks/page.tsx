@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import AppTopBar from "@/components/fo/AppTopBar";
-import AppPage from "@/components/fo/AppPage";
+import ChecksView from "@/components/app-core/ChecksView";
 
 export const metadata: Metadata = { title: "Checks" };
 
-// TODO(app-core): build from design/project/Checks.dc.html (spec §5).
-export default function ChecksPage() {
-  return (
-    <>
-      <AppTopBar crumbs={[{ label: "Acme", href: "/overview" }, { label: "Checks" }]} />
-      <AppPage title="Checks" />
-    </>
-  );
+// Checks (Checks.dc.html). `?tab=infra` opens the Infra tab so Overview links land on the right check.
+export default async function ChecksPage({ searchParams }: { searchParams: Promise<{ tab?: string | string[] }> }) {
+  const { tab } = await searchParams;
+  return <ChecksView initialTab={tab === "infra" ? "infra" : "code"} />;
 }
