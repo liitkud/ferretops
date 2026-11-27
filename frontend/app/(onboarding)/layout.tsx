@@ -11,7 +11,7 @@ export default function OnboardingLayout({ children }: { children: React.ReactNo
         <Logo size="app" />
         <span className="text-sm text-ink-300">
           Signed in as {currentUser.email} ·{" "}
-          <Link href="/sign-in" className="text-ink-200">
+          <Link href="/sign-in" className="text-ink-200 underline underline-offset-[0.15em]">
             Sign out
           </Link>
         </span>

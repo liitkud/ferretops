@@ -9,6 +9,8 @@
 /* Links inside the new site default to the accent; nav, rows and crumbs set ink explicitly. */
 :where(.fo) a { color: var(--fur-text); }
 :where(.fo) a:hover { color: var(--fur-hover); }
+/* Links inside running text are underlined too, so they don't rely on color alone (WCAG 1.4.1). */
+:where(.fo) :where(p, .sub, .lead) a:not(.btn, .fo-btn) { text-decoration: underline; text-underline-offset: 0.15em; }
 
 .ic { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 

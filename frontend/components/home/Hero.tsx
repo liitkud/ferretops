@@ -132,7 +132,7 @@ function PolicyPage() {
     <div className={s.vizPage}>
       <div className="absolute inset-0 -rotate-[1.5deg] overflow-hidden rounded-[0.25rem] border-hair border-[#23262e] bg-[#fafaf8] font-[family-name:Arial,Helvetica,sans-serif] text-[#3a3d44]">
         <span className={`${s.scan} ${s.scanPage}`} aria-hidden="true" />
-        <div className="absolute left-8 right-8 top-[1.125rem] flex justify-between gap-3 border-b-hair border-[#d9d9d3] pb-1.5 text-[0.5625rem] leading-[0.75rem] text-[#80838b]">
+        <div className="absolute left-8 right-8 top-[1.125rem] flex justify-between gap-3 border-b-hair border-[#d9d9d3] pb-1.5 text-[0.5625rem] leading-[0.75rem] text-[#686b72]">
           <span>Acme Corp · Information Security Policy</span>
           <span>ISP-004 · v3.2</span>
         </div>
@@ -175,7 +175,7 @@ function PolicyPage() {
           <b className="text-[#16171a]">4.5</b> Accounts inactive for 90 days are disabled. Access for leavers is
           revoked by the end of their last working day.
         </p>
-        <div className="absolute bottom-4 left-8 right-8 flex justify-between gap-3 border-t-hair border-[#d9d9d3] pt-1.5 text-[0.5625rem] leading-[0.75rem] text-[#80838b]">
+        <div className="absolute bottom-4 left-8 right-8 flex justify-between gap-3 border-t-hair border-[#d9d9d3] pt-1.5 text-[0.5625rem] leading-[0.75rem] text-[#686b72]">
           <span>Internal · Owner: Security · Rev. 2026-03-14</span>
           <span>Page 3 of 12</span>
         </div>

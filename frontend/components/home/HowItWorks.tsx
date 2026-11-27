@@ -246,7 +246,7 @@ export default function HowItWorks() {
                     setAuto(false);
                   }}
                   className={`flex w-full cursor-pointer items-start gap-4 rounded-[0.875rem] border-hair py-[1.125rem] pl-5 pr-5 text-left sm:pr-24 font-sans transition-[background-color,border-color,opacity] duration-200 ease-out ${
-                    on ? "border-line-100 bg-bg-100" : "border-transparent bg-transparent opacity-[0.72] hover:opacity-100"
+                    on ? "border-line-100 bg-bg-100" : "border-transparent bg-transparent opacity-[0.85] hover:opacity-100"
                   }`}
                 >
                   <st.Icon className={`mt-[0.0625rem] size-[1.375rem] flex-none ${st.text}`} strokeWidth={1.5} aria-hidden="true" />
