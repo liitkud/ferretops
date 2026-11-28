@@ -298,7 +298,10 @@ func shouldExcludePath(filePath string, exclude ExcludeConfig) bool {
 	}
 
 	for _, path := range exclude.Paths {
-		if strings.HasPrefix(filePath, strings.TrimSuffix(path, "/")) {
+		// Match on a path-segment boundary so "vendor/" excludes
+		// "vendor/lib/x.go" but not "vendorx/file.go".
+		prefix := strings.TrimSuffix(path, "/")
+		if filePath == prefix || strings.HasPrefix(filePath, prefix+"/") {
 			return true
 		}
 	}

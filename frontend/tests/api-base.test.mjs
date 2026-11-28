@@ -23,3 +23,38 @@ test("preserves an explicitly configured API URL", () => {
     "https://api.example",
   );
 });
+
+test("empty configured URL falls through to environment resolution", () => {
+  assert.equal(
+    getApiBase({ configuredUrl: "", isBrowser: true, hostname: "localhost" }),
+    "http://localhost:8000",
+  );
+});
+
+test("non-local browser hostnames use the same-origin proxy", () => {
+  for (const hostname of ["192.168.1.10", "[IP]", "dev.local", ""]) {
+    assert.equal(
+      getApiBase({ isBrowser: true, hostname }),
+      "/api",
+      `hostname ${JSON.stringify(hostname)}`,
+    );
+  }
+});
+
+test("localhost variants resolve to the local backend port", () => {
+  assert.equal(
+    getApiBase({ isBrowser: true, hostname: "[::1]" }),
+    "http://localhost:8000",
+  );
+});
+
+test("configured URL wins over local browser resolution", () => {
+  assert.equal(
+    getApiBase({
+      configuredUrl: "https://api.example/",
+      isBrowser: true,
+      hostname: "localhost",
+    }),
+    "https://api.example",
+  );
+});
